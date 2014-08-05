@@ -1,6 +1,33 @@
 # read-input
 
-Easily read from stdin or files.
+Write CLI utilities that take a stream of data either stdin from one of more 
+files. To do this:
+
+```sh
+$ yourutil file.txt
+$ yourutil file1.txt file2.txt
+$ yourutil < file.txt
+$ cat file.txt | yourutil
+```
+
+Just do this:
+
+```js
+#!/usr/bin/env node
+var read = require('read-input');
+var fnames = process.argv.slice(2);
+
+read(fnames, function (err, res) {
+
+  if (res.error) {
+    console.error(res.error);
+    process.exit(8);
+  }
+
+  res.data /* => "..." */
+
+});
+```
 
 <!-- include: index.js -->
 
