@@ -1,7 +1,7 @@
 # read-input
 
 Write CLI utilities that take a stream of data either stdin from one of more 
-files. To do this:
+files. To be able to handle this:
 
 ```sh
 $ yourutil file.txt
