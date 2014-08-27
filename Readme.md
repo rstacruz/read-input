@@ -20,7 +20,7 @@ var fnames = process.argv.slice(2);
 read(fnames, function (err, res) {
 
   if (res.error) {
-    console.error(res.error);
+    console.error(res.error.message);
     process.exit(8);
   }
 

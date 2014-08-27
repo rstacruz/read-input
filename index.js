@@ -96,7 +96,7 @@ read.stdin = function (fn) {
  * Each of the items in `files` has a similar list of values:
  *
  * ~ data (String): File data
- * ~ error (Error): error, if applicable
+ * ~ error (Error): the first error encountered, if applicable
  * ~ stdin (Boolean): is `true` if the file is read from stdin
  * ~ name (String): File name
  *
@@ -111,9 +111,17 @@ getter(Result.prototype, 'data', function () {
   return this.files.map(function (f) { return f.data || ""; }).join("");
 });
 
-
 getter(Result.prototype, 'error', function () {
-  return this.files.reduce(function (acc, f) { return acc || f.error; });
+  var fails = this.failures;
+  if (fails[0]) return fails[0].error;
+});
+
+getter(Result.prototype, 'failures', function () {
+  return this.files.filter(function (f) { return f.error; });
+});
+
+getter(Result.prototype, 'successes', function () {
+  return this.files.filter(function (f) { return ! f.error; });
 });
 
 getter(Result.prototype, 'stdin', function () {
