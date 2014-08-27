@@ -92,6 +92,8 @@ read.stdin = function (fn) {
  * ~ error (Error): The first error in all files. `undefined` if successful.
  * ~ stdin (Boolean): is `true` if the file is read from stdin
  * ~ files (Array): A list of files.
+ * ~ failures (Array): A list of files that failed.
+ * ~ successes (Array): A list of files that succeeded.
  *
  * Each of the items in `files` has a similar list of values:
  *

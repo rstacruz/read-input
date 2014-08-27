@@ -62,4 +62,28 @@ describe('a run with multiple errors', function () {
   });
 });
 
+describe('a run with no errors', function () {
+  beforeEach(function (next) {
+    read(['./test/read.js'], function (err, _res) {
+      expect(err).falsy;
+      res = _res;
+      next();
+    });
+  });
+
+  it('has no .error', function () {
+    expect(res.error).be.falsy;
+  });
+
+  it('has no .failures', function () {
+    var items = res.failures;
+    expect(items).have.length(0);
+  });
+
+  it('has .successes', function () {
+    var items = res.successes;
+    expect(items).have.length(1);
+  });
+});
+
 /* Hola mundo */
