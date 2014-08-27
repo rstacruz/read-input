@@ -31,22 +31,23 @@ read(fnames, function (err, res) {
 <!-- include: index.js -->
 
 ### read()
-> `read(files, fn)`
+> `read(files, function(err, res) { ... })`
 
 Reads from files. If no files are given, read from stdin.
-The `err` argument will always be null, as errors will be part of `res`.
+The result `res` is a [result object](#res). If any of the files can't be
+read, `err` will be an error object.
 
 ```js
 var read = require('read-input');
 var fnames = process.argv.slice(2); //=> ['readme.txt']
 
 read(fnames, function (err, res) {
-  res.data       //=> '...'
-  res.error      //=> undefined | Error()
-  res.stdin      //=> true | false
-  res.files      //=> [...]
-  res.successes  //=> [...]
-  res.failures   //=> [...]
+  res.data       // '...'
+  res.error      // undefined or Error()
+  res.stdin      // true or false
+  res.files      // [...]
+  res.successes  // [...]
+  res.failures   // [...]
 });
 ```
 
@@ -55,10 +56,10 @@ You can also iterate through `res.files`.
 ```js
 read(fnames, function (err, res) {
   res.files.forEach(function (f) {
-    f.data    //=> ...
-    f.error   //=> undefined | Error(...)
-    f.stdin   //=> true | false
-    f.name    //=> 'readme.txt'
+    f.data    // ...
+    f.error   // undefined or Error(...)
+    f.stdin   // true or false
+    f.name    // 'readme.txt'
   }
 });
 ```
@@ -94,7 +95,8 @@ The results value is an object passed to the callback of `read()`.
 * `failures` *(Array)* <span class='dash'>&mdash;</span> A list of files that failed.
 * `successes` *(Array)* <span class='dash'>&mdash;</span> A list of files that succeeded.
 
-Each of the items in `files` has a similar list of values:
+The `files`, `failures` and `successes` are lists of files. Each of the items in these lists
+has a similar list of values:
 
 * `data` *(String)* <span class='dash'>&mdash;</span> File data
 * `error` *(Error)* <span class='dash'>&mdash;</span> the first error encountered, if applicable

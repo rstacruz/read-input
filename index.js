@@ -1,30 +1,31 @@
 var fs = require('fs');
 
 /**
- * read() : read(files, fn)
+ * read() : read(files, function(err, res) { ... })
  * Reads from files. If no files are given, read from stdin.
- * The `err` argument will always be null, as errors will be part of `res`.
+ * The result `res` is a [result object](#res). If any of the files can't be
+ * read, `err` will be an error object.
  *
  *     var read = require('read-input');
  *     var fnames = process.argv.slice(2); //=> ['readme.txt']
  *
  *     read(fnames, function (err, res) {
- *       res.data       //=> '...'
- *       res.error      //=> undefined | Error()
- *       res.stdin      //=> true | false
- *       res.files      //=> [...]
- *       res.successes  //=> [...]
- *       res.failures   //=> [...]
+ *       res.data       // '...'
+ *       res.error      // undefined or Error()
+ *       res.stdin      // true or false
+ *       res.files      // [...]
+ *       res.successes  // [...]
+ *       res.failures   // [...]
  *     });
  *
  * You can also iterate through `res.files`.
  *
  *     read(fnames, function (err, res) {
  *       res.files.forEach(function (f) {
- *         f.data    //=> ...
- *         f.error   //=> undefined | Error(...)
- *         f.stdin   //=> true | false
- *         f.name    //=> 'readme.txt'
+ *         f.data    // ...
+ *         f.error   // undefined or Error(...)
+ *         f.stdin   // true or false
+ *         f.name    // 'readme.txt'
  *       }
  *     });
  *
@@ -97,7 +98,8 @@ read.stdin = function (fn) {
  * ~ failures (Array): A list of files that failed.
  * ~ successes (Array): A list of files that succeeded.
  *
- * Each of the items in `files` has a similar list of values:
+ * The `files`, `failures` and `successes` are lists of files. Each of the items in these lists
+ * has a similar list of values:
  *
  * ~ data (String): File data
  * ~ error (Error): the first error encountered, if applicable
