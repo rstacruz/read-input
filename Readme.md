@@ -42,10 +42,12 @@ var read = require('read-input');
 var fnames = process.argv.slice(2); //=> ['readme.txt']
 
 read(fnames, function (err, res) {
-  res.data    //=> '...'
-  res.error   //=> undefined | Error()
-  res.stdin   //=> true | false
-  res.files   //=> [...]
+  res.data       //=> '...'
+  res.error      //=> undefined | Error()
+  res.stdin      //=> true | false
+  res.files      //=> [...]
+  res.successes  //=> [...]
+  res.failures   //=> [...]
 });
 ```
 
@@ -90,11 +92,13 @@ The results value is an object passed to the callback of `read()`.
 * `error` *(Error)* <span class='dash'>&mdash;</span> The first error in all files. `undefined` if successful.
 * `stdin` *(Boolean)* <span class='dash'>&mdash;</span> is `true` if the file is read from stdin
 * `files` *(Array)* <span class='dash'>&mdash;</span> A list of files.
+* `failures` *(Array)* <span class='dash'>&mdash;</span> A list of files that failed.
+* `successes` *(Array)* <span class='dash'>&mdash;</span> A list of files that succeeded.
 
 Each of the items in `files` has a similar list of values:
 
 * `data` *(String)* <span class='dash'>&mdash;</span> File data
-* `error` *(Error)* <span class='dash'>&mdash;</span> error, if applicable
+* `error` *(Error)* <span class='dash'>&mdash;</span> the first error encountered, if applicable
 * `stdin` *(Boolean)* <span class='dash'>&mdash;</span> is `true` if the file is read from stdin
 * `name` *(String)* <span class='dash'>&mdash;</span> File name
 

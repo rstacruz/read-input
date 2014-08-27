@@ -9,10 +9,12 @@ var fs = require('fs');
  *     var fnames = process.argv.slice(2); //=> ['readme.txt']
  *
  *     read(fnames, function (err, res) {
- *       res.data    //=> '...'
- *       res.error   //=> undefined | Error()
- *       res.stdin   //=> true | false
- *       res.files   //=> [...]
+ *       res.data       //=> '...'
+ *       res.error      //=> undefined | Error()
+ *       res.stdin      //=> true | false
+ *       res.files      //=> [...]
+ *       res.successes  //=> [...]
+ *       res.failures   //=> [...]
  *     });
  *
  * You can also iterate through `res.files`.
