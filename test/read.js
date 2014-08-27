@@ -1,12 +1,12 @@
 /* jshint expr: true */
 var expect = require('chai').expect;
 var read = require('../index');
-var res;
+var res, err;
 
 describe('read.files', function () {
   beforeEach(function (next) {
-    read(['./test/read.js', './foo'], function (err, _res) {
-      expect(err).falsy;
+    read(['./test/read.js', './foo'], function (_err, _res) {
+      err = _err;
       res = _res;
       next();
     });
@@ -37,15 +37,20 @@ describe('read.files', function () {
 
 describe('a run with multiple errors', function () {
   beforeEach(function (next) {
-    read(['./test/read.js', './foo', './bar'], function (err, _res) {
-      expect(err).falsy;
+    read(['./test/read.js', './foo', './bar'], function (_err, _res) {
+      err = _err;
       res = _res;
       next();
     });
   });
 
-  it('has .error', function () {
-    expect(res.error.message).match(/ENOENT/);
+  it('has err that matches res.error', function () {
+    expect(err.message).eq(res.error.message);
+  });
+
+  it('has .error that joins all errors', function () {
+    expect(res.error.message).include("ENOENT, no such file or directory './foo'");
+    expect(res.error.message).include("ENOENT, no such file or directory './bar'");
   });
 
   it('has .failures', function () {
@@ -64,8 +69,8 @@ describe('a run with multiple errors', function () {
 
 describe('a run with no errors', function () {
   beforeEach(function (next) {
-    read(['./test/read.js'], function (err, _res) {
-      expect(err).falsy;
+    read(['./test/read.js'], function (_err, _res) {
+      err = _err;
       res = _res;
       next();
     });
@@ -73,6 +78,10 @@ describe('a run with no errors', function () {
 
   it('has no .error', function () {
     expect(res.error).be.falsy;
+  });
+
+  it('has no error', function () {
+    expect(err).be.falsy;
   });
 
   it('has no .failures', function () {

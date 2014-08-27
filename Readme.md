@@ -18,14 +18,13 @@ var read = require('read-input');
 var fnames = process.argv.slice(2);
 
 read(fnames, function (err, res) {
-
-  if (res.error) {
-    console.error(res.error.message);
+  // `err` will be given if at least one of the files fail.
+  if (err) {
+    console.error(err.message);
     process.exit(8);
   }
 
   res.data /* => "..." */
-
 });
 ```
 

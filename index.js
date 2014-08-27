@@ -58,7 +58,7 @@ function read (files, fn) {
     });
 
     out = new Result(out);
-    fn(null, out);
+    fn(out.error, out);
   }
 }
 
@@ -117,7 +117,14 @@ getter(Result.prototype, 'data', function () {
 
 getter(Result.prototype, 'error', function () {
   var fails = this.failures;
-  if (fails[0]) return fails[0].error;
+  if (fails.length === 0) return;
+
+  var errors = fails.map(function (f) { return f.error; });
+  var messages = errors.map(function (f) { return f.message; });
+
+  var err = new Error(messages.join("\n"));
+  err.files = fails;
+  return err;
 });
 
 getter(Result.prototype, 'failures', function () {
