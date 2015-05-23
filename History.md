@@ -1,4 +1,8 @@
-## v0.2.0 - August 27, 2014
+## [v0.3.0]
+
+ * Implement promises as well as callbacks. You can now use `read().then(...)` as well as `read(fn)`.
+
+## [v0.2.0] - August 27, 2014
 
  * The callback now passes `err` if any of the files fail.
  * `res.error` now returns an Error object.
@@ -8,3 +12,6 @@
 ## v0.1.0 - August 5, 2014
 
  * Initial release.
+
+[v0.3.0]: https://github.com/rstacruz/read-input/compare/v0.2.0...v0.3.0
+[v0.2.0]: https://github.com/rstacruz/read-input/compare/v0.1.0...v0.2.0
