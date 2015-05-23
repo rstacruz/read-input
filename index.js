@@ -38,28 +38,40 @@ var fs = require('fs');
  */
 
 function read (files, fn) {
-  // from stdin
-  if (!files || files.length === 0) {
-    read.stdin(function (err, data) {
-      if (err)
-        fn(null, new Result([{ stdin: true, error: err }]));
-      else
-        fn(null, new Result([{ stdin: true, data: data }]));
-    });
-  }
-  // from files
-  else {
-    var out = files.map(function (fname) {
-      try {
-        var data = fs.readFileSync(fname, 'utf-8');
-        return { name: fname, data: data };
-      } catch (err) {
-        return { name: fname, error: err };
-      }
-    });
+  return promisify(fn, function (ok, fail) {
+    // from stdin
+    if (!files || files.length === 0) {
+      read.stdin(function (err, data) {
+        if (err)
+          ok(new Result([{ stdin: true, error: err }]));
+        else
+          ok(new Result([{ stdin: true, data: data }]));
+      });
+    }
+    // from files
+    else {
+      var out = files.map(function (fname) {
+        try {
+          var data = fs.readFileSync(fname, 'utf-8');
+          return { name: fname, data: data };
+        } catch (err) {
+          return { name: fname, error: err };
+        }
+      });
 
-    out = new Result(out);
-    fn(out.error, out);
+      var result = new Result(out);
+      ok(result);
+    }
+  });
+}
+
+function promisify (callback, block) {
+  if (callback) {
+    block(
+      function (result) { callback(null, result); },
+      function (err) { callback(err); });
+  } else {
+    return new Promise(block);
   }
 }
 
@@ -106,6 +118,8 @@ read.stdin = function (fn) {
  * ~ stdin (Boolean): is `true` if the file is read from stdin
  * ~ name (String): File name
  *
+ * There's also `error.result` which refers to the result object.
+ *
  * See [read()](read) for an example.
  */
 
@@ -126,6 +140,7 @@ getter(Result.prototype, 'error', function () {
 
   var err = new Error(messages.join("\n"));
   err.files = fails;
+  err.result = this;
   return err;
 });
 

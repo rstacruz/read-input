@@ -12,6 +12,14 @@ describe('read.files', function () {
     });
   });
 
+  it('returns no error', function () {
+    expect(err).falsy;
+  });
+
+  it('returns a result', function () {
+    expect(res).a('object');
+  });
+
   it('returns .files', function () {
     expect(res.files).array;
     expect(res.files).have.length(2);
@@ -44,13 +52,15 @@ describe('a run with multiple errors', function () {
     });
   });
 
-  it('has err that matches res.error', function () {
+  xit('has err that matches res.error', function () {
+    // Now deprecated
     expect(err.message).eq(res.error.message);
   });
 
   it('has .error that joins all errors', function () {
-    expect(res.error.message).include("ENOENT, no such file or directory './foo'");
-    expect(res.error.message).include("ENOENT, no such file or directory './bar'");
+    expect(res.error.message).include("ENOENT");
+    expect(res.error.message).include("./foo");
+    expect(res.error.message).include("./bar");
   });
 
   it('has .failures', function () {
