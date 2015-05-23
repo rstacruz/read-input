@@ -41,20 +41,29 @@ read, `err` will be an error object.
 var read = require('read-input');
 var fnames = process.argv.slice(2); //=> ['readme.txt']
 
-read(fnames, function (err, res) {
+read(fnames).then(function (res) {
   res.data       // '...'
   res.error      // undefined or Error()
   res.stdin      // true or false
   res.files      // [...]
   res.successes  // [...]
   res.failures   // [...]
+}).catch(function (err) {
+  // stdin error
+});
+```
+
+To support older versions of Node.js without Promises, you can use callbacks:
+
+```js
+read(fname, function (err, res) {
 });
 ```
 
 You can also iterate through `res.files`.
 
 ```js
-read(fnames, function (err, res) {
+read(fnames).then(function(res) {
   res.files.forEach(function (f) {
     f.data    // ...
     f.error   // undefined or Error(...)
@@ -68,7 +77,7 @@ If `files` is a blank array (or null), data will be read from stdin. The
 resulting data will have a similar schema.
 
 ```js
-read([], function (err, res) {
+read([]).then(fucntion (res) {
   ...
 });
 ```
@@ -76,11 +85,15 @@ read([], function (err, res) {
 ### read.stdin()
 > `read.stdin(fn)`
 
-Read data from standard input. The `err` argument will always be null.
+Read data from standard input. This will not throw errors.
 
 ```js
-read.stdin(function (err, data) {
+read.stdin().then(function (data) {
   console.log(data); // string
+});
+
+read.stdin(function (err, data) {
+  ...
 });
 ```
 
@@ -102,6 +115,8 @@ has a similar list of values:
 * `error` *(Error)* <span class='dash'>&mdash;</span> the first error encountered, if applicable
 * `stdin` *(Boolean)* <span class='dash'>&mdash;</span> is `true` if the file is read from stdin
 * `name` *(String)* <span class='dash'>&mdash;</span> File name
+
+There's also `error.result` which refers to the result object.
 
 See [read()](read) for an example.
 

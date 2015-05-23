@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "prepublish": "npm test"
+    "prepublish": "npm test",
+    "update-docs": "mdextract -u Readme.md"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "homepage": "https://github.com/rstacruz/read-input",
   "devDependencies": {
     "chai": "^1.9.1",
+    "mdextract": "^1.0.0",
     "mocha": "^2.2.5",
     "mocha-repeat": "^0.1.0"
   }

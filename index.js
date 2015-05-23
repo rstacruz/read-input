@@ -20,6 +20,11 @@ var fs = require('fs');
  *       // stdin error
  *     });
  *
+ * To support older versions of Node.js without Promises, you can use callbacks:
+ *
+ *     read(fname, function (err, res) {
+ *     });
+ *
  * You can also iterate through `res.files`.
  *
  *     read(fnames).then(function(res) {
@@ -67,37 +72,33 @@ function read (files, fn) {
   });
 }
 
-function promisify (callback, block) {
-  if (callback) {
-    block(
-      function (result) { callback(null, result); },
-      function (err) { callback(err); });
-  } else {
-    return new Promise(block);
-  }
-}
-
 /**
  * read.stdin() : read.stdin(fn)
- * Read data from standard input. The `err` argument will always be null.
+ * Read data from standard input. This will not throw errors.
+ *
+ *   read.stdin().then(function (data) {
+ *     console.log(data); // string
+ *   });
  *
  *   read.stdin(function (err, data) {
- *     console.log(data); // string
+ *     ...
  *   });
  */
 
 read.stdin = function (fn) {
-  var data = '';
+  return promisify(fn, function (ok, err) {
+    var data = '';
 
-  process.stdin.setEncoding('utf8');
+    process.stdin.setEncoding('utf8');
 
-  process.stdin.on('readable', function() {
-    var chunk = process.stdin.read();
-    if (chunk !== null) data += chunk;
-  });
+    process.stdin.on('readable', function() {
+      var chunk = process.stdin.read();
+      if (chunk !== null) data += chunk;
+    });
 
-  process.stdin.on('end', function() {
-    fn(null, data);
+    process.stdin.on('end', function() {
+      fn(null, data);
+    });
   });
 };
 
@@ -165,6 +166,20 @@ getter(Result.prototype, 'stdin', function () {
 
 function getter (proto, prop, fn) {
   Object.defineProperty(proto, prop, { get: fn });
+}
+
+/*
+ * bridges callbacks and promise mode
+ */
+
+function promisify (callback, block) {
+  if (callback) {
+    block(
+      function (result) { callback(null, result); },
+      function (err) { callback(err); });
+  } else {
+    return new Promise(block);
+  }
 }
 
 module.exports = read;
