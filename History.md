@@ -1,4 +1,4 @@
-## [v0.3.0]
+## [v0.3.0] - May 23, 2015
 
  * Implement promises as well as callbacks. You can now use `read().then(...)` as well as `read(fn)`.
 
