@@ -3,14 +3,29 @@ var expect = require('chai').expect;
 var read = require('../index');
 var res, err;
 
-describe('read.files', function () {
-  beforeEach(function (next) {
-    read(['./test/read.js', './foo'], function (_err, _res) {
-      err = _err;
-      res = _res;
-      next();
+var mdescribe = require('mocha-repeat');
+
+beforeEach(function () {
+  err = null;
+  res = null;
+});
+
+mdescribe('read.files', [ 'promises', 'callback' ], function (mode) {
+  if (mode === 'promises') {
+    beforeEach(function (next) {
+      read(['./test/read.js', './foo'], function (_err, _res) {
+        err = _err;
+        res = _res;
+        next();
+      });
     });
-  });
+  } else if (mode === 'callback') {
+    beforeEach(function () {
+      return read(['./test/read.js', './foo'])
+        .then(function (_res) { res = _res; })
+        .catch(function (_err) { err = _err; });
+    });
+  }
 
   it('returns no error', function () {
     expect(err).falsy;
@@ -40,6 +55,20 @@ describe('read.files', function () {
     var file = res.files[1];
     expect(file.error).instanceOf(Error);
     expect(file.error.code).eql('ENOENT');
+  });
+});
+
+xdescribe('a run with all errors', function () {
+  beforeEach(function (next) {
+    read(['./foo', './bar'], function (_err, _res) {
+      err = _err;
+      res = _res;
+      next();
+    });
+  });
+
+  it('works', function () {
+    expect(err).instanceOf(Error);
   });
 });
 

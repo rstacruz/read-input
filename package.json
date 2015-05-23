@@ -27,6 +27,7 @@
   "homepage": "https://github.com/rstacruz/read-input",
   "devDependencies": {
     "chai": "^1.9.1",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "mocha-repeat": "^0.1.0"
   }
 }

@@ -9,18 +9,20 @@ var fs = require('fs');
  *     var read = require('read-input');
  *     var fnames = process.argv.slice(2); //=> ['readme.txt']
  *
- *     read(fnames, function (err, res) {
+ *     read(fnames).then(function (res) {
  *       res.data       // '...'
  *       res.error      // undefined or Error()
  *       res.stdin      // true or false
  *       res.files      // [...]
  *       res.successes  // [...]
  *       res.failures   // [...]
+ *     }).catch(function (err) {
+ *       // stdin error
  *     });
  *
  * You can also iterate through `res.files`.
  *
- *     read(fnames, function (err, res) {
+ *     read(fnames).then(function(res) {
  *       res.files.forEach(function (f) {
  *         f.data    // ...
  *         f.error   // undefined or Error(...)
@@ -32,7 +34,7 @@ var fs = require('fs');
  * If `files` is a blank array (or null), data will be read from stdin. The
  * resulting data will have a similar schema.
  *
- *     read([], function (err, res) {
+ *     read([]).then(fucntion (res) {
  *       ...
  *     });
  */
