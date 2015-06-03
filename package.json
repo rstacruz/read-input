@@ -1,6 +1,6 @@
 {
   "name": "read-input",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Easily read from stdin or files.",
   "main": "index.js",
   "directories": {

@@ -97,7 +97,7 @@ read.stdin = function (fn) {
     });
 
     process.stdin.on('end', function() {
-      fn(null, data);
+      ok(data);
     });
   });
 };

@@ -1,3 +1,7 @@
+## [v0.3.1] - Jun  3, 2015
+
+ * Fix using read.stdin() as a promise.
+
 ## [v0.3.0] - May 23, 2015
 
  * Implement promises as well as callbacks. You can now use `read().then(...)` as well as `read(fn)`.
@@ -13,5 +17,6 @@
 
  * Initial release.
 
-[v0.3.0]: https://github.com/rstacruz/read-input/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/rstacruz/read-input/compare/v0.1.0...v0.2.0
+[v0.3.0]: https://github.com/rstacruz/read-input/compare/v0.2.0...v0.3.0
+[v0.3.1]: https://github.com/rstacruz/read-input/compare/v0.3.0...v0.3.1
